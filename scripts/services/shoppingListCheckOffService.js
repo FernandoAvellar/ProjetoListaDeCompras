@@ -8,25 +8,11 @@ function ShoppingListCheckOffService($rootScope) {
 
   var service = this;
 
-  /*var buyListItems =
-    [{ itemName: "bolacha maizena", itemQuantity: "10 pacotes" },
-    { itemName: "presunto", itemQuantity: "300 gramas" },
-    { itemName: "cafe", itemQuantity: "2 pacotes" },
-    { itemName: "sorvete", itemQuantity: "1 pote" },
-    { itemName: "pizza congelada", itemQuantity: "3 caixas" }];*/
-
   var buyListItems = [];
   var boughtListItems = [];
   var newItemContent = { itemName: "", itemQuantity: "" };
 
-  service.getInitialDataFromFirebase = function () {
-    var databaseKeyRef = firebase.database().ref().child("buyListItems");
-    databaseKeyRef.once('value', snapshot => {
-      snapshot.forEach(function (childSnapshot) {
-        buyListItems.push(childSnapshot.val());
-      })
-    });
-  }
+  getInitialDataFromFirebase();
 
   service.getBuyList = function () {
     return buyListItems;
@@ -56,6 +42,7 @@ function ShoppingListCheckOffService($rootScope) {
         itemQuantity: newItemQuantity
       };
     buyListItems.push(newItem);
+    saveItemToDatabase(newItemName, newItemQuantity);
   }
 
   service.returnSelectedItemToNewItemInput = function (itemIndex) {
@@ -68,5 +55,27 @@ function ShoppingListCheckOffService($rootScope) {
     var returnedItem = boughtListItems.splice(itemIndex, 1);
     buyListItems.push(returnedItem[0]);
   }
+
+  function getInitialDataFromFirebase() {
+    var databaseKeyRef = firebase.database().ref().child("buyListItems");
+    databaseKeyRef.once('value', snapshot => {
+      snapshot.forEach(function (childSnapshot) {
+        buyListItems.push(childSnapshot.val());
+      });
+      $rootScope.$apply();
+    });
+  }
+
+  function saveItemToDatabase(name, quantity) {
+      // Get a new reference to the database service
+      var databaseRef = firebase.database().ref().child("buyListItems");
+      //Push Reference to create a new instant id for each new product inside buyListItems
+      var databaseRefPush = databaseRef.push();
+
+      databaseRefPush.set({
+        itemName: name,
+        itemQuantity: quantity,
+      });
+    }
 
 }
