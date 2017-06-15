@@ -19,14 +19,17 @@ function ShoppingListCheckOffService($rootScope) {
   var boughtListItems = [];
   var newItemContent = { itemName: "", itemQuantity: "" };
 
-  service.getBuyList = function () {
+  service.getInitialDataFromFirebase = function () {
     var databaseKeyRef = firebase.database().ref().child("buyListItems");
     databaseKeyRef.once('value', snapshot => {
       snapshot.forEach(function (childSnapshot) {
         buyListItems.push(childSnapshot.val());
       })
     });
-      return buyListItems;
+  }
+
+  service.getBuyList = function () {
+    return buyListItems;
   };
 
   service.getBoughtList = function () {

@@ -9,6 +9,8 @@ function ToBuyController(ShoppingListCheckOffService) {
 
   var buyList = this;
 
+  ShoppingListCheckOffService.getInitialDataFromFirebase();
+
   buyList.items = ShoppingListCheckOffService.getBuyList();
 
   buyList.boughtButton = function (itemIndex) {
