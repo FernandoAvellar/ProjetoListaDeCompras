@@ -28,16 +28,15 @@ function ShoppingListCheckOffService($rootScope) {
   }
 
   service.changeItemFromBuyListToBoughtList = function (itemIndex) {
-    var removedItem = buyListItems.splice(itemIndex, 1);
-    boughtListItems.push(removedItem[0]);
-
-    saveItemToDatabase(removedItem[0].itemName, removedItem[0].itemQuantity, "boughtListItems");
-    //TODO: Falta excluir o item do buyList no Firebase
+    var removedItem = buyListItems.splice(itemIndex, 1)[0];
+    deleteItemFromFirebase(removedItem.itemName, "buyListItems");
+    boughtListItems.push(removedItem);
+    saveItemToDatabase(removedItem.itemName, removedItem.itemQuantity, "boughtListItems");
   };
 
   service.deleteItemFromBuyList = function (itemIndex) {
-    buyListItems.splice(itemIndex, 1);
-    //TODO: Falta excluir o item do buyList no Firebase
+    var removedItem = buyListItems.splice(itemIndex, 1)[0];
+    deleteItemFromFirebase(removedItem.itemName, "buyListItems");
   }
 
   service.addToBuyList = function (newItemName, newItemQuantity) {
@@ -54,15 +53,14 @@ function ShoppingListCheckOffService($rootScope) {
     var editItem = buyListItems.splice(itemIndex, 1)[0];
     newItemContent = { itemName: editItem.itemName, itemQuantity: editItem.itemQuantity };
     $rootScope.$broadcast('refreshInputFields');
-    //TODO: Apagar item removido do buyList do Firebase
+    deleteItemFromFirebase(editItem.itemName, "buyListItems");
   }
 
   service.returnSelectedItemToBuyList = function (itemIndex) {
-    var returnedItem = boughtListItems.splice(itemIndex, 1);
-    //TODO:Apagar o item do boughList no Firebase
-    buyListItems.push(returnedItem[0]);
-    saveItemToDatabase(returnedItem[0].itemName, returnedItem[0].itemQuantity, "buyListItems");
-
+    var returnedItem = boughtListItems.splice(itemIndex, 1)[0];
+    deleteItemFromFirebase(returnedItem.itemName, "boughtListItems");
+    buyListItems.push(returnedItem);
+    saveItemToDatabase(returnedItem.itemName, returnedItem.itemQuantity, "buyListItems");
   }
 
   function getAndPopulateInitialDataFromBuyListInFirebase() {
@@ -94,6 +92,15 @@ function ShoppingListCheckOffService($rootScope) {
     databaseRefPush.set({
       itemName: name,
       itemQuantity: quantity,
+    });
+  }
+
+  function deleteItemFromFirebase(itemName, databaseName) {
+    var databaseListKeyRef = firebase.database().ref().child(databaseName);
+    databaseListKeyRef.orderByChild("itemName").equalTo(itemName).once("value", snapshot => {
+      snapshot.forEach(function (childSnapshot) {
+        firebase.database().ref(databaseName).child(childSnapshot.key).remove();
+      });
     });
   }
 
