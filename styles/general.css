@@ -71,11 +71,25 @@ tr
 }
 
 button {
-    margin-left: 10px;
+    margin-left: 5px;
     margin-bottom: 2px;
-    width: 80px;
-    height: 28px;
-    border-radius: 5px;
+    width: 50px;
+}
+
+button.ok {
+    background-color: #27df92;
+}
+
+button.return {
+    background-color: #27df92;
+}
+
+button.remove {
+    background-color: #e73414;
+}
+
+button.edit {
+    background-color: #0694fb;
 }
 
 button.btn-primary {
