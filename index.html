@@ -29,7 +29,7 @@
                     <table>
                         <tr ng-repeat="item in buyList.items">
                             <td>
-                                <span class="quantity">{{item.itemQuantity}}</span> de {{item.itemName}}.
+                                <span class="quantity">{{item.itemQuantity}}</span> {{item.itemName}}
                             </td>
 
                             <td>
@@ -67,7 +67,7 @@
                     <table>
                         <tr ng-repeat="item in boughtList.items">
                             <td>
-                                <span class="quantity">{{item.itemQuantity}}</span> de {{item.itemName}}.
+                                <span class="quantity">{{item.itemQuantity}}</span> {{item.itemName}}
                             </td>
                             <td>
                                 <button class="return" ng-click="boughtList.returnToBuyListButton($index);">
@@ -88,17 +88,17 @@
             <div class="inserir" ng-controller="NewItemController as newItem">
                 <div class="input-group">
                     <span class="input-group-addon">Nome:</span>
-                    <input ng-model="newItem.newItemName" type="text" class="form-control" placeholder="Digite o nome do produto" aria-describedby="basic-addon1"
-                        maxlength="25" value="">
+                    <input ng-model="newItem.newItemName" type="text" class="form-control" placeholder="Nome do produto" aria-describedby="basic-addon1"
+                        maxlength="25" required>
                 </div>
 
                 <div class="input-group">
                     <span name="qtdeInput" class="input-group-addon">Quantidade: </span>
-                    <input ng-model="newItem.newItemQuantity" type="text" class="form-control" placeholder="Digite a quantidade do produto" aria-describedby="basic-addon1"
-                        maxlength="15" value="0">
+                    <input ng-model="newItem.newItemQuantity" type="number" class="form-control" placeholder="Quantidade" aria-describedby="basic-addon1"
+                        min="0" required>
                 </div>
 
-                <button ng-click="newItem.addButton();" type="button" class="btn btn-primary btn-lg btn-block">INSERIR</button>
+                <button ng-disabled="newItem.newItemQuantity <= 0 || newItem.newItemName === '' " ng-click="newItem.addButton();" type="button" class="btn btn-primary btn-lg btn-block">INSERIR</button>
 
             </div>
         </div>
