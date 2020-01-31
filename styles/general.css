@@ -2,12 +2,11 @@ body{
     margin: 0;
     padding: 0;
     bottom: 0;
-    background-color: white;
 }
 
 .icon{
     font-size: 35px;
-    color: black;
+    color: #666666;
     margin-left: 20px;
 }
 
@@ -21,7 +20,7 @@ h1{
     font-size: 40px;
     margin-bottom: 20px;
     text-align: center;
-    color: #ff0000;
+    color: #666666;
 }
 
 h2{
@@ -78,18 +77,22 @@ button {
 
 button.ok {
     background-color: #27df92;
+    border: none;
 }
 
 button.return {
     background-color: #27df92;
+    border: none;
 }
 
 button.remove {
     background-color: #e73414;
+    border: none;
 }
 
 button.edit {
     background-color: #0694fb;
+    border: none;
 }
 
 button.btn-primary {
