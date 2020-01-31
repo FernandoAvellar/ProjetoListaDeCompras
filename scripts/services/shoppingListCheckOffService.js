@@ -65,7 +65,7 @@ function ShoppingListCheckOffService($rootScope) {
 
   function getAndPopulateInitialDataFromBuyListInFirebase() {
     var databaseBuyListKeyRef = firebase.database().ref().child("buyListItems");
-    databaseBuyListKeyRef.once('value', snapshot => {
+    databaseBuyListKeyRef.orderByChild("itemName").once('value', snapshot => {
       snapshot.forEach(function (childSnapshot) {
         buyListItems.push(childSnapshot.val());
       });
@@ -75,7 +75,7 @@ function ShoppingListCheckOffService($rootScope) {
 
   function getAndPopulateInitialDataFromBoughtListInFirebase() {
     var databaseBoughtListKeyRef = firebase.database().ref().child("boughtListItems");
-    databaseBoughtListKeyRef.once('value', snapshot => {
+    databaseBoughtListKeyRef.orderByChild("itemName").once('value', snapshot => {
       snapshot.forEach(function (childSnapshot) {
         boughtListItems.push(childSnapshot.val());
       });
